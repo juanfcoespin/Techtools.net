@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TechTools.Net" GeneratedClassName="conf">
+  <Profiles />
+  <Settings>
+    <Setting Name="smtpMailServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mail.jamesbrownpharma.com</Value>
+    </Setting>
+    <Setting Name="senderMail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">sistemas@jamesbrownpharma.com</Value>
+    </Setting>
+    <Setting Name="senderUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">sistemas</Value>
+    </Setting>
+    <Setting Name="senderPwd" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">S1st3m4sJBP</Value>
+    </Setting>
+    <Setting Name="smtpPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">587</Value>
+    </Setting>
+    <Setting Name="smtpSupportSSL" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

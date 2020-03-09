@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Juan Francisco Espín Navia</authors>
+    <owners>$author$</owners>
+    <license type="file">license.txt</license>
+    <projectUrl>https://github.com/juanfcoespin/libraries/tree/master/TechTools.DelegatesAndEnums</projectUrl>
+    <iconUrl>https://github.com/juanfcoespin/libraries/blob/master/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Incorporación de Enumeraciones</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>Delegados Enumeraciones</tags>
+  </metadata>
+  <files>
+    <file src="license.txt" target="" />
+  </files>
+</package>
