@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TechTools.Exceptions;
+using TechTools.Core.Contract;
 using System.Data.OracleClient;
 using System.Data;
 
 namespace TechTools.Core.Oracle9i
 {
-    public class BaseCore
+    public class BaseCore:ICore
     {
         public OracleConnection DbConnection;
 
