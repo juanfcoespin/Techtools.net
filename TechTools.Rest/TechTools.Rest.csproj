@@ -53,6 +53,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TechTools.Exceptions\TechTools.Exceptions.csproj">
+      <Project>{69440dba-7c87-4521-a8d0-4b5c51b76d20}</Project>
+      <Name>TechTools.Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TechTools.Serializador\TechTools.Serializador.csproj">
       <Project>{bb3befa2-22a3-4223-b489-4a005fc53216}</Project>
       <Name>TechTools.Serializador</Name>

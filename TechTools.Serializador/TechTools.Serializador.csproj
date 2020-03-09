@@ -48,6 +48,10 @@
     <Compile Include="SerializadorJson.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TechTools.Exceptions\TechTools.Exceptions.csproj">
+      <Project>{69440dba-7c87-4521-a8d0-4b5c51b76d20}</Project>
+      <Name>TechTools.Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TechTools.Utils\TechTools.Utils.csproj">
       <Project>{f5f4b36b-6166-4db9-998c-8aed8cade5b6}</Project>
       <Name>TechTools.Utils</Name>
