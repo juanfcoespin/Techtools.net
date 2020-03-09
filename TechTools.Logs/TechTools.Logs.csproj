@@ -56,5 +56,27 @@
       <LastGenOutput>conf.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TechTools.DelegatesAndEnums\TechTools.DelegatesAndEnums.csproj">
+      <Project>{c6863cc0-e925-4f7c-a36c-21be93b4739e}</Project>
+      <Name>TechTools.DelegatesAndEnums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechTools.Exceptions\TechTools.Exceptions.csproj">
+      <Project>{69440dba-7c87-4521-a8d0-4b5c51b76d20}</Project>
+      <Name>TechTools.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechTools.Msg\TechTools.Msg.csproj">
+      <Project>{564bfb5a-f530-4b15-963b-6eef28258bfc}</Project>
+      <Name>TechTools.Msg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechTools.Serializador\TechTools.Serializador.csproj">
+      <Project>{bb3befa2-22a3-4223-b489-4a005fc53216}</Project>
+      <Name>TechTools.Serializador</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechTools.Utils\TechTools.Utils.csproj">
+      <Project>{f5f4b36b-6166-4db9-998c-8aed8cade5b6}</Project>
+      <Name>TechTools.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
