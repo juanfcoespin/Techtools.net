@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TechTools.Core.Contract
+namespace TechTools.Core.Base
 {
     public interface IEntity<T>:ICore
     {

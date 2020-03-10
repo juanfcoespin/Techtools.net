@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TechTools.Core.Hana" GeneratedClassName="conf">
+  <Profiles />
+  <Settings>
+    <Setting Name="ConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=192.168.57.13:30015;UserName=SYSTEM;Password=H4n4bdd*</Value>
+    </Setting>
+    <Setting Name="DefaultSchema" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SBO_JBP_PROD</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

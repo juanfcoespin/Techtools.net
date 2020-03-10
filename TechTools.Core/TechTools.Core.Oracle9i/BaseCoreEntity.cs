@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data.OracleClient;
-using TechTools.Core.Contract;
+using TechTools.Core.Base;
 using System.Data;
 
 namespace TechTools.Core.Oracle9i

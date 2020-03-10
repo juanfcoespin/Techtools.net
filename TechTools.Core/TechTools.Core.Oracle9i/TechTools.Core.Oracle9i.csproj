@@ -56,10 +56,6 @@
       <Project>{69440dba-7c87-4521-a8d0-4b5c51b76d20}</Project>
       <Name>TechTools.Exceptions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TechTools.Core.Contract\TechTools.Core.Contract.csproj">
-      <Project>{4890096f-5313-401f-9366-74b7622aae8b}</Project>
-      <Name>TechTools.Core.Contract</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

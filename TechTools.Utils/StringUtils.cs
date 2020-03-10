@@ -389,5 +389,18 @@ namespace TechTools.Utils
             }
             
         }
+        public static string GetSqlInStringFromList(List<string> me) {
+            var ms = string.Empty;
+            if (me != null && me.Count > 0) {
+                int i = 0;
+                me.ForEach(item => {
+                    if (i > 0)
+                        ms += ", ";
+                    ms += string.Format("'{0}'", item);
+                    i++;
+                });
+            }
+            return ms;
+        }
     }
 }

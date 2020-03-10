@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
-namespace TechTools.Core.Contract
+namespace TechTools.Core.Base
 {
     public interface ICore
     {
@@ -21,6 +22,12 @@ namespace TechTools.Core.Contract
         /// </summary>
         /// <param name="sql">Query a la base</param>
         void Execute(string sql);
+        /// <summary>
+        /// Consultas a la base de datos
+        /// </summary>
+        /// <param name="sql">Query a la base</param>
+        /// <returns></returns>
+        DataTable GetDataTableByQuery(string sql);
         int GetIntScalarByQuery(string sql);
         string GetScalarByQuery(string sql);
     }
