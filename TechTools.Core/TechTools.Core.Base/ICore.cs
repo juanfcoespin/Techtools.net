@@ -12,7 +12,7 @@ namespace TechTools.Core.Base
         /// <summary>
         /// Conecta al motor de base de datos
         /// </summary>
-        void Connect();
+        void Connect(string schema);
         /// <summary>
         /// DesConecta del motor de base de datos
         /// </summary>
@@ -27,7 +27,7 @@ namespace TechTools.Core.Base
         /// </summary>
         /// <param name="sql">Query a la base</param>
         /// <returns></returns>
-        DataTable GetDataTableByQuery(string sql);
+        DataTable GetDataTableByQuery(string sql, string schema);
         int GetIntScalarByQuery(string sql);
         string GetScalarByQuery(string sql);
     }

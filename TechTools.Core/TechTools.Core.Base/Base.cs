@@ -12,11 +12,17 @@ namespace TechTools.Core.Base
     {
         public DateTime GetDateTime(object me)
         {
-            if (DBNull.Value.Equals(me))
+            if (me==null || DBNull.Value.Equals(me) || string.IsNullOrEmpty(me.ToString()) )
             {
                 return DateTime.MinValue;
             }
-            return Convert.ToDateTime(me);
+            try
+            {
+                return Convert.ToDateTime(me);
+            }
+            catch{
+                return DateTime.MinValue;
+            }
         }
         public bool GetBoolean(object me)
         {
@@ -26,7 +32,7 @@ namespace TechTools.Core.Base
             }
             return Convert.ToBoolean(me);
         }
-        public Int32 GetInt(object me)
+        public int GetInt(object me)
         {
             if (DBNull.Value.Equals(me))
             {
@@ -42,6 +48,15 @@ namespace TechTools.Core.Base
             }
             var ms = Convert.ToDecimal(me);
             return decimal.Round(ms, 2);
+        }
+        public double GetDouble(object me)
+        {
+            if (DBNull.Value.Equals(me))
+            {
+                return 0;
+            }
+            var ms = Convert.ToDouble(me);
+            return ms;
         }
         /// <summary>
         /// Ej: token: "juan francisco espin"

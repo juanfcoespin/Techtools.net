@@ -56,5 +56,11 @@
       <LastGenOutput>conf.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TechTools.Core.Base\TechTools.Core.Base.csproj">
+      <Project>{4890096f-5313-401f-9366-74b7622aae8b}</Project>
+      <Name>TechTools.Core.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

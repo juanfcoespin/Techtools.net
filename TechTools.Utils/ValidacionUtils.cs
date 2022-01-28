@@ -26,9 +26,13 @@ namespace TechTools.Utils
             Regex reg = new Regex(regEx);
             return reg.IsMatch(itemToValidate);
         }
-        public static bool Celular_Convencional(string telefono) 
+        public static bool Celular_O_ConvencionalValido(string telefono) 
         {
-            return ValidarExpresionRegular(@"0[1-9]\d{7,7}\d?$", telefono);
+            if (CelularValido(telefono))
+                return true;
+            if (TelefonoConvencionalValido(telefono))
+                return true;
+            return false;
         }
         /// <summary>
         /// Valida un número de cédula de Ecuador

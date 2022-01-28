@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Data.OleDb;
 using System.Data;
 
-using TechTools.Core.Contract;
+using TechTools.Core.Base;
 
 namespace TechTools.Core.Access
 {
-    public class BaseCore:ICore
+    public class BaseCore:TechTools.Core.Base.Base, ICore
     {
         private OleDbConnection cn;
         private string _BddPath;

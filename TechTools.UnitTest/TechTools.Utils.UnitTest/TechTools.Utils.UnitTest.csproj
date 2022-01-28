@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="StringUtilsUT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidacionesUT.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

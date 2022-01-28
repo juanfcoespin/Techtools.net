@@ -132,7 +132,14 @@ namespace TechTools.Core.Oracle9i
             return sql;
         }
 
-        
-        
+        public void Connect(string schema)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataTable GetDataTableByQuery(string sql, string schema)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

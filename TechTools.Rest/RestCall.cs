@@ -154,9 +154,9 @@ namespace TechTools.Rest
                         return value;
                     return SerializadorJson.Deserializar(typeOfResult, value);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    throw new Exception(string.Format("No se pudo deserealizar el objeto con el formato JSON:\r\n{0}",value));
+                    throw new Exception(string.Format("No se pudo deserealizar el objeto con el formato JSON:\r\n{0} {1}",value,e.Message));
                 }
                 
         }

@@ -68,5 +68,17 @@ namespace TechTools.Utils
                 return null;
             return string.Format("{0}-{1}-{2}",me[0],me[1],me[2]);
         }
+
+        public static T DeepClone<T>(T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
+        }
     }
 }
