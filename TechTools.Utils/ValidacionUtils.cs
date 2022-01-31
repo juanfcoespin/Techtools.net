@@ -217,6 +217,15 @@ namespace TechTools.Utils
             if (string.IsNullOrEmpty(eMail))
                 return false;
             return ValidarExpresionRegular(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", eMail);
+            //try
+            //{
+            //    var addr = new System.Net.Mail.MailAddress(eMail);
+            //    return addr.Address == eMail;
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
     }
 }

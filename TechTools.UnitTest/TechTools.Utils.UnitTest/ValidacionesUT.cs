@@ -17,5 +17,11 @@ namespace TechTools.Utils.UnitTest
         {
             Assert.AreEqual(true, ValidacionUtils.TelefonoConvencionalValido("032460156"));
         }
+        [TestMethod]
+        public void mailValido()
+        {
+            //diego_paulja@hotmail.com
+            Assert.AreEqual(true, ValidacionUtils.EmailValid("marcosmiguel_17@hotmail.com"));
+        }
     }
 }
