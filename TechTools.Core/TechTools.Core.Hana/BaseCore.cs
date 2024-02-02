@@ -85,7 +85,6 @@ namespace TechTools.Core.Hana
             }
             catch (Exception e)
             {
-                e = ExceptionManager.GetDeepErrorMessage(e, ExceptionManager.eCapa.Core);
                 throw new Exception(string.Format("{0}\r\nSql:\r\n{1}", e.Message, sql));
             }
         }
@@ -144,8 +143,7 @@ namespace TechTools.Core.Hana
             catch (Exception ex)
             {
                 Disconect();
-                ex = ExceptionManager.GetDeepErrorMessage(ex, ExceptionManager.eCapa.Core);
-                throw new Exception(string.Format("{0}\r\nSql:\r\n{1}", ex.Message, sql));
+                throw;
             }
         }
     }

@@ -5,6 +5,7 @@ using System.Text;
 
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Reflection;
 
 namespace TechTools.Utils
 {
@@ -79,6 +80,23 @@ namespace TechTools.Utils
 
                 return (T)formatter.Deserialize(ms);
             }
+        }
+        public static List<string> GetMemberNames(Type type)
+        {
+            List<string> memberNames = new List<string>();
+
+            // Get all public properties and fields of the type
+            MemberInfo[] members = type.GetMembers(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var member in members)
+            {
+                if (member.MemberType == MemberTypes.Property || member.MemberType == MemberTypes.Field)
+                {
+                    memberNames.Add(member.Name);
+                }
+            }
+
+            return memberNames;
         }
     }
 }

@@ -17,24 +17,23 @@ namespace TechTools.Net
         /// <param name="subject"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public static bool Send(string destinationMails, string subject, string body, string attchFilePath=null)
+        public static bool Send(string destinationMails, string subject, string body, List<string> attchFilePaths=null)
         {
             try
             {
-                SendWithOutReturn(destinationMails, subject, body, attchFilePath);
+                SendWithOutReturn(destinationMails, subject, body, attchFilePaths);
                 return true;
             }
-            catch(Exception e)
+            catch
             {
-                var errorMsg = e.Message;
                 return false;
             }
         }
-        public static bool SendAndGetError(ref string error, string destinationMails, string subject, string body, string attchFilePath = null)
+        public static bool SendAndGetError(ref string error, string destinationMails, string subject, string body, List<string> attchFilePaths = null)
         {
             try
             {
-                SendWithOutReturn(destinationMails, subject, body, attchFilePath);
+                SendWithOutReturn(destinationMails, subject, body, attchFilePaths);
                 return true;
             }
             catch(Exception e)
@@ -44,7 +43,7 @@ namespace TechTools.Net
             }
         }
 
-        private static void SendWithOutReturn(string destinationMails, string subject, string body, string attchFilePath = null)
+        private static void SendWithOutReturn(string destinationMails, string subject, string body, List<string> attchFilePaths = null)
         {
             
             if (string.IsNullOrEmpty(destinationMails))
@@ -78,11 +77,11 @@ namespace TechTools.Net
             SmtpServer.EnableSsl = conf.Default.smtpSupportSSL;
             SmtpServer.Credentials = new System.Net.NetworkCredential(conf.Default.senderUser, conf.Default.senderPwd);
             
-            if (attchFilePath != null)
+            if (attchFilePaths != null)
             {
-                System.Net.Mail.Attachment attachment;
-                attachment = new System.Net.Mail.Attachment(attchFilePath);
-                mail.Attachments.Add(attachment);
+                attchFilePaths.ForEach(file => {
+                    mail.Attachments.Add(new System.Net.Mail.Attachment(file));
+                });
             }
             SmtpServer.Send(mail);
         }

@@ -40,14 +40,14 @@ namespace TechTools.Core.Base
             }
             return Convert.ToInt32(me);
         }
-        public decimal GetDecimal(object me)
+        public decimal GetDecimal(object me, int numDecimals=2)
         {
             if (DBNull.Value.Equals(me))
             {
                 return 0;
             }
             var ms = Convert.ToDecimal(me);
-            return decimal.Round(ms, 2);
+            return decimal.Round(ms, numDecimals);
         }
         public double GetDouble(object me)
         {
