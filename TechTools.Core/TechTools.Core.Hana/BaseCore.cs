@@ -146,5 +146,16 @@ namespace TechTools.Core.Hana
                 throw;
             }
         }
+
+        public DataRow GetFirstRowByQuery(string sql)
+        {
+            var dt = GetDataTableByQuery(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                return dt.Rows[0];
+            }
+            else
+                return null;
+        }
     }
 }
