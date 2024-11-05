@@ -12,7 +12,7 @@ namespace TechTools.Core.Hana {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class conf : global::System.Configuration.ApplicationSettingsBase {
         
         private static conf defaultInstance = ((conf)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new conf())));
@@ -25,7 +25,8 @@ namespace TechTools.Core.Hana {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=192.168.57.13:30015;UserName=SYSTEM;Password=H4n4bdd*")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=192.168.57.13:30015;UserName=SAPSYSTEM;Password=Pa55w0rdsap*;DATABASENAME=" +
+            "NDB")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));

@@ -24,7 +24,7 @@ namespace TechTools.Net
                 SendWithOutReturn(destinationMails, subject, body, attchFilePaths);
                 return true;
             }
-            catch
+            catch(Exception e)
             {
                 return false;
             }

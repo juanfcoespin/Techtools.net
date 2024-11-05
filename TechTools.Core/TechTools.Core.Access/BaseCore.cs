@@ -43,7 +43,7 @@ namespace TechTools.Core.Access
             }
 
         }
-        public DataTable GetDataTableByQuery(string sql)
+        public DataTable GetDataTableByQuery(string sql, string esquema=null)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace TechTools.Core.Access
         {
             this.cn.Close();
         }
-        public void Connect()
+        public void Connect(string cs=null)
         {
             this.cn.Open();   
         }
