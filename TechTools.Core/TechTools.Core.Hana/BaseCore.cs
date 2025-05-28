@@ -31,9 +31,18 @@ namespace TechTools.Core.Hana
         }
         public void Execute(string sql)
         {
-            Connect();
-            ExecuteQuery(sql);
-            Disconect();
+            try
+            {
+                Connect();
+                ExecuteQuery(sql);
+                Disconect();
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(sql+e.Message);
+            }
+            
         }
         private void ExecuteQuery(string sql)
         {
