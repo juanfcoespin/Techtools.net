@@ -30,6 +30,12 @@ namespace TechTools.Net
                 return false;
             }
         }
+
+        public static object Send(object to, object subject, object body)
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool SendAndGetError(ref string error, string destinationMails, string subject, string body, List<string> attchFilePaths = null)
         {
             try
