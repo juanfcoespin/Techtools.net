@@ -12,7 +12,7 @@ namespace TechTools.Net {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.14.0.0")]
     internal sealed partial class conf : global::System.Configuration.ApplicationSettingsBase {
         
         private static conf defaultInstance = ((conf)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new conf())));
@@ -25,7 +25,7 @@ namespace TechTools.Net {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mail.jamesbrownpharma.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("smtp.office365.com")]
         public string smtpMailServer {
             get {
                 return ((string)(this["smtpMailServer"]));
@@ -34,7 +34,7 @@ namespace TechTools.Net {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("sistemas@jamesbrownpharma.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("sistemas@jbp.com.ec")]
         public string senderMail {
             get {
                 return ((string)(this["senderMail"]));
@@ -43,16 +43,7 @@ namespace TechTools.Net {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("sistemas")]
-        public string senderUser {
-            get {
-                return ((string)(this["senderUser"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("S1st3m4sJBP")]
+        [global::System.Configuration.DefaultSettingValueAttribute("J4m3sBr0wnPh4rm4$")]
         public string senderPwd {
             get {
                 return ((string)(this["senderPwd"]));
@@ -65,15 +56,6 @@ namespace TechTools.Net {
         public int smtpPort {
             get {
                 return ((int)(this["smtpPort"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool smtpSupportSSL {
-            get {
-                return ((bool)(this["smtpSupportSSL"]));
             }
         }
     }

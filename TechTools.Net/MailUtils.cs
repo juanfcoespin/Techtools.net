@@ -1,11 +1,14 @@
-﻿using System;
+﻿using MailKit.Security;
+using MimeKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Mail;
 using TechTools.Utils;
-using System.Net;
 
 namespace TechTools.Net
 {
@@ -18,136 +21,68 @@ namespace TechTools.Net
         /// <param name="subject"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public static bool Send(string destinationMails, string subject, string body, List<string> attchFilePaths=null)
-        {
+        public static bool Send(string destinationMails, string subject, string msg, ref string error, List<string> attachFilePaths = null) {
             try
             {
-                SendWithOutReturn(destinationMails, subject, body, attchFilePaths);
-                return true;
-            }
-            catch(Exception e)
-            {
-                return false;
-            }
-        }
+                var smtpServer = conf.Default.smtpMailServer;
+                var port = conf.Default.smtpPort;
+                var pwd = conf.Default.senderPwd;
+                var senderMail = conf.Default.senderMail;
+                
 
-        public static object Send(object to, object subject, object body)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static bool SendAndGetError(ref string error, string destinationMails, string subject, string body, List<string> attchFilePaths = null)
-        {
-            try
-            {
-                SendWithOutReturn(destinationMails, subject, body, attchFilePaths);
-                return true;
-            }
-            catch(Exception e)
-            {
-                error = e.Message;
-                return false;
-            }
-        }
-
-        private static void SendWithOutReturn(string destinationMails, string subject, string body, List<string> attchFilePaths = null)
-        {
-            
-            if (string.IsNullOrEmpty(destinationMails))
-                throw new Exception("No existe destinatarios del correo");
-            if (string.IsNullOrEmpty(body))
-                throw new Exception("El cuerpo del correo está vacío");
-            MailMessage mail = new MailMessage();
-
-            mail.From = new MailAddress(conf.Default.senderMail);
-            var recipients = destinationMails.Split(new char[] { ',', ';' });
-            var numRecipients = 0;
-            foreach (var recipient in recipients)
-            {
-                var recipientWithOutWhiteSpace = recipient.Trim();
-                if (!ValidacionUtils.EmailValid(recipientWithOutWhiteSpace))
-                    throw new Exception(string.Format("El mail {0} es incorrecto, no se pudo enviar el correo a este destinatario", recipient));
-                else
+                var mensaje = new MimeMessage();
+                mensaje.From.Add(new MailboxAddress("JB", senderMail));
+                mensaje.Subject = subject;
+                var destinatarios = destinationMails.Split(new char[] { ',', ';' });
+                var correosCorrectos = 0;
+                foreach (var destinatario in destinatarios)
                 {
-                    mail.To.Add(recipientWithOutWhiteSpace);
-                    numRecipients++;
+                    if (!string.IsNullOrEmpty(destinatario)) {
+                        var correo = destinatario.Trim();
+                        if (!string.IsNullOrEmpty(correo)) {
+                            mensaje.To.Add(MailboxAddress.Parse(destinatario));
+                            correosCorrectos++;
+                        }
+                        
+                    }
+                }
+                if (correosCorrectos == 0)
+                    throw new Exception("No existe ningun correo correcto para enviar en:" + destinationMails);
+                var htmlPart = new TextPart("html") { Text = msg };
+                var body = new Multipart("mixed");
+                body.Add(htmlPart);
+                if (attachFilePaths != null) {
+                    attachFilePaths.ForEach(path => {
+                        var adjunto = new MimePart()
+                        {
+                            Content = new MimeContent(System.IO.File.OpenRead(path)),
+                            ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+                            ContentTransferEncoding = ContentEncoding.Base64,
+                            FileName = System.IO.Path.GetFileName(path)
+                        };
+                        body.Add(adjunto);
+                    });
+                }
+                mensaje.Body = body;
+                
+                using (var cliente = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    // Evita el error de validación del certificado (solo si confías en el servidor)
+                    cliente.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12;
+                    cliente.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    cliente.CheckCertificateRevocation = false;
+                    cliente.Connect(smtpServer, port, SecureSocketOptions.StartTls);
+                    cliente.Authenticate(senderMail, pwd);
+                    cliente.Send(mensaje);
+                    cliente.Disconnect(true);
+                    return true;
                 }
             }
-            if (numRecipients == 0)
-                throw new Exception("No existen destinatarios de correo válidos");
-            mail.Subject = subject;
-            mail.Body = body;
-            mail.IsBodyHtml = true;
-            if (attchFilePaths != null)
+            catch (Exception e)
             {
-                attchFilePaths.ForEach(file => {
-                    mail.Attachments.Add(new System.Net.Mail.Attachment(file));
-                });
+                error=e.Message + e.StackTrace;
+                return false;
             }
-
-            var smtpServer = conf.Default.smtpMailServer;
-            var port = conf.Default.smtpPort;
-            var user = conf.Default.senderUser;
-            var pwd = conf.Default.senderPwd;
-            var ssl= conf.Default.smtpSupportSSL;
-
-            /*var smtpServer = "smtp.office365.com";
-            var port = 587;
-            var user = "sistemas@jbp.com.ec";
-            var pwd = "Ph4rm4Br0wn$Adm1n%";//"xxvddxytmycsdzhk";
-            var ssl = true;*/
-
-            SmtpClient clienteSmtp = new SmtpClient(smtpServer, port)
-            {
-                Credentials = new NetworkCredential(user, pwd),
-                EnableSsl = ssl // Activa TLS (SSL)
-            };
-            // Enviar el correo
-            string ms = null;
-            clienteSmtp.Send(mail);
-        }
-        private static void SendWithOutReturnBk(string destinationMails, string subject, string body, List<string> attchFilePaths = null)
-        {
-
-            if (string.IsNullOrEmpty(destinationMails))
-                throw new Exception("No existe destinatarios del correo");
-            if (string.IsNullOrEmpty(body))
-                throw new Exception("El cuerpo del correo está vacío");
-            MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient(conf.Default.smtpMailServer);
-
-            mail.From = new MailAddress(conf.Default.senderMail);
-            var recipients = destinationMails.Split(new char[] { ',', ';' });
-            var numRecipients = 0;
-            foreach (var recipient in recipients)
-            {
-                var recipientWithOutWhiteSpace = recipient.Trim();
-                if (!ValidacionUtils.EmailValid(recipientWithOutWhiteSpace))
-                    throw new Exception(string.Format("El mail {0} es incorrecto, no se pudo enviar el correo a este destinatario", recipient));
-                else
-                {
-                    mail.To.Add(recipientWithOutWhiteSpace);
-                    numRecipients++;
-                }
-            }
-            if (numRecipients == 0)
-                throw new Exception("No existen destinatarios de correo válidos");
-            mail.Subject = subject;
-            mail.Body = body;
-            mail.IsBodyHtml = true;
-            if (attchFilePaths != null)
-            {
-                attchFilePaths.ForEach(file => {
-                    mail.Attachments.Add(new System.Net.Mail.Attachment(file));
-                });
-            }
-
-            SmtpServer.Port = conf.Default.smtpPort;
-            SmtpServer.EnableSsl = conf.Default.smtpSupportSSL;
-            SmtpServer.Credentials = new System.Net.NetworkCredential(conf.Default.senderUser, conf.Default.senderPwd);
-
-
-            SmtpServer.Send(mail);
         }
     }
 }
