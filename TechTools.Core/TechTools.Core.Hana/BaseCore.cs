@@ -29,32 +29,42 @@ namespace TechTools.Core.Hana
             if (this.cn != null)
                 this.cn.Close();
         }
-        public void Execute(string sql)
+        public void Execute(string sql, Dictionary<string, object> parameters)
         {
             try
             {
                 Connect();
-                ExecuteQuery(sql);
+                ExecuteQuery(sql,parameters);
                 Disconect();
             }
             catch (Exception e)
             {
 
-                throw new Exception(sql+e.Message);
+                throw new Exception(sql+e.Message+e.StackTrace);
             }
             
         }
-        private void ExecuteQuery(string sql)
+        private void ExecuteQuery(string sql, Dictionary<string, object> parameters)
         {
-            var cm = new HanaCommand(sql, this.cn);
-            cm.ExecuteNonQuery();
+            using (var cm = new HanaCommand(sql, this.cn))
+            {
+                if (parameters != null)
+                {
+                    foreach (var p in parameters)
+                    {
+                        cm.Parameters.AddWithValue(p.Key, p.Value);
+                    }
+                }
+
+                cm.ExecuteNonQuery();
+            }
         }
         private void SetSchema(string schema=null) // no need to be closed because is called with Connect() function
         {
             if (schema == null)
                 schema = conf.Default.DefaultSchema;
             var sql = string.Format("set schema \"{0}\";", schema);
-            ExecuteQuery(sql);
+            ExecuteQuery(sql,null);
         }
         public string GetBooleanSAP(bool me)
         {
@@ -67,7 +77,7 @@ namespace TechTools.Core.Hana
             }
             return "null";
         }
-        public DataTable GetDataTableByQuery(string sql, string schema=null)
+        /*public DataTable GetDataTableByQuery(string sql, Dictionary<string, object> parameters, string schema=null)
         {
             try
             {
@@ -84,6 +94,39 @@ namespace TechTools.Core.Hana
             {
                 Disconect();
                 throw new Exception(e.Message+" "+sql);
+            }
+        }*/
+        public DataTable GetDataTableByQuery(string sql, Dictionary<string, object> parameters, string schema = null)
+        {
+            try
+            {
+                Connect(schema);
+
+                using (var cmd = new HanaCommand(sql, this.cn))
+                {
+                    // 🔒 Agregar parámetros de forma segura
+                    if (parameters != null)
+                    {
+                        foreach (var p in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(p.Key, p.Value);
+                        }
+                    }
+                    using (var da = new HanaDataAdapter(cmd))
+                    {
+                        var dt = new DataTable();
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error ejecutando query: {sql}\n{e.Message+e.StackTrace}");
+            }
+            finally
+            {
+                Disconect();
             }
         }
         public int GetIntScalarByQuery(string sql)
@@ -154,17 +197,6 @@ namespace TechTools.Core.Hana
                 Disconect();
                 throw;
             }
-        }
-
-        public DataRow GetFirstRowByQuery(string sql)
-        {
-            var dt = GetDataTableByQuery(sql);
-            if (dt != null && dt.Rows.Count > 0)
-            {
-                return dt.Rows[0];
-            }
-            else
-                return null;
         }
     }
 }

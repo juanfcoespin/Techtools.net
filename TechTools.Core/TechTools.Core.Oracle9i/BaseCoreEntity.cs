@@ -10,7 +10,7 @@ using System.Data;
 
 namespace TechTools.Core.Oracle9i
 {
-    public class BaseCoreEntity<T>:BaseCore,IEntity<T>
+    public class BaseCoreEntity<T>:BaseCore
     {
         public delegate List<T> dTranslateDataToList(DataTable dt);
         public event dTranslateDataToList TranslateDataToListEvent;

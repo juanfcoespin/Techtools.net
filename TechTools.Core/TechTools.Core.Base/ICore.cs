@@ -21,13 +21,13 @@ namespace TechTools.Core.Base
         /// Sentencias del timpo DML (crud)
         /// </summary>
         /// <param name="sql">Query a la base</param>
-        void Execute(string sql);
+        void Execute(string sql, Dictionary<string, object> parameters);
         /// <summary>
         /// Consultas a la base de datos
         /// </summary>
         /// <param name="sql">Query a la base</param>
         /// <returns></returns>
-        DataTable GetDataTableByQuery(string sql, string schema);
+        DataTable GetDataTableByQuery(string sql, Dictionary<string, object> parameters, string schema);
         int GetIntScalarByQuery(string sql);
         string GetScalarByQuery(string sql);
     }

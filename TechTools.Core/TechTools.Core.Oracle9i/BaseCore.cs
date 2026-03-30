@@ -11,7 +11,7 @@ using System.Data;
 
 namespace TechTools.Core.Oracle9i
 {
-    public class BaseCore:TechTools.Core.Base.Base, ICore
+    public class BaseCore:TechTools.Core.Base.Base
     {
         public OracleConnection DbConnection;
 
