@@ -28,7 +28,7 @@ namespace TechTools.Core.Base
         /// <param name="sql">Query a la base</param>
         /// <returns></returns>
         DataTable GetDataTableByQuery(string sql, Dictionary<string, object> parameters, string schema);
-        int GetIntScalarByQuery(string sql);
-        string GetScalarByQuery(string sql);
+        int GetIntScalarByQuery(string sql, Dictionary<string, object> parameters);
+        string GetScalarByQuery(string sql, Dictionary<string, object> parametros = null);
     }
 }

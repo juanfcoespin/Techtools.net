@@ -92,7 +92,7 @@ namespace TechTools.Core.Base
                     {
                         if (j > 0)
                             ms += " and ";
-                        ms += string.Format(" lower({0}) like '%{1}%' ", campo, miniToken);
+                        ms += string.Format(" lower({0}) like {1} ", campo, miniToken);
                         j++;
                     }
 

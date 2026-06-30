@@ -49,6 +49,7 @@
     <Compile Include="CpuUtils.cs" />
     <Compile Include="FechaUtils.cs" />
     <Compile Include="FileUtils.cs" />
+    <Compile Include="Loger.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="MoneyUtils.cs" />
     <Compile Include="ObjectUtils.cs" />

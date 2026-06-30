@@ -129,34 +129,22 @@ namespace TechTools.Core.Hana
                 Disconect();
             }
         }
-        public int GetIntScalarByQuery(string sql)
+        public int GetIntScalarByQuery(string sql, Dictionary<string, object> parametros)
         {
             try
             {
-                return this.GetInt(this.GetScalarObjectByQuery(sql));
+                return this.GetInt(this.GetScalarByQuery(sql,parametros));
             }
             catch (Exception e)
             {
                 throw new Exception(string.Format("{0}\r\nSql:\r\n{1}", e.Message, sql));
             }
         }
-        public decimal GetDecimalScalarByQuery(string sql)
+        public decimal GetDecimalScalarByQuery(string sql, Dictionary<string, object> parametros)
         {
             try
             {
-                return this.GetDecimal(this.GetScalarObjectByQuery(sql));
-            }
-            catch (Exception e)
-            {
-                e = ExceptionManager.GetDeepErrorMessage(e, ExceptionManager.eCapa.Core);
-                throw new Exception(string.Format("{0}\r\nSql:\r\n{1}", e.Message, sql));
-            }
-        }
-        public double GetDoubleScalarByQuery(string sql)
-        {
-            try
-            {
-                return this.GetDouble(this.GetScalarObjectByQuery(sql));
+                return this.GetDecimal(this.GetScalarByQuery(sql, parametros));
             }
             catch (Exception e)
             {
@@ -164,14 +152,26 @@ namespace TechTools.Core.Hana
                 throw new Exception(string.Format("{0}\r\nSql:\r\n{1}", e.Message, sql));
             }
         }
-        public string GetScalarByQuery(string sql)
+        public double GetDoubleScalarByQuery(string sql, Dictionary<string, object> parametros)
         {
             try
             {
-                var ms = this.GetScalarObjectByQuery(sql);
-                if (ms == null)
+                return this.GetDouble(this.GetScalarByQuery(sql, parametros));
+            }
+            catch (Exception e)
+            {
+                e = ExceptionManager.GetDeepErrorMessage(e, ExceptionManager.eCapa.Core);
+                throw new Exception(string.Format("{0}\r\nSql:\r\n{1}", e.Message, sql));
+            }
+        }
+        public string GetScalarByQuery(string sql, Dictionary<string,object> parametros)
+        {
+            try
+            {
+                var dt = this.GetDataTableByQuery(sql, parametros);
+                if (dt == null || dt.Rows.Count==0)
                     return null;
-                return ms.ToString();
+                return dt.Rows[0][0].ToString();
             }
             catch (Exception ex)
             {
@@ -180,23 +180,103 @@ namespace TechTools.Core.Hana
                 throw new Exception(string.Format("{0}\r\nSql:\r\n{1}", ex.Message, sql));
             }
         }
-        public dynamic GetScalarObjectByQuery(string sql)
-        {
-            try
-            {
+
+        /*****          INICIO TRANSACCIONES          *****/
+        // esta seccion es para poder usar transacciones, si algo falla entonces se podra hacer rollback
+        private HanaTransaction transaction;
+        public void BeginTransaction(){
+            if (cn == null || cn.State != ConnectionState.Open)
                 Connect();
-                var dt = new DataTable();
-                var da = new HanaDataAdapter(sql, this.cn);
-                da.Fill(dt);
-                da.Dispose();
-                Disconect();
-                return (dt.Rows.Count == 0 ? null : dt.Rows[0][0]);
+            Connect();
+            transaction = cn.BeginTransaction();
+        }
+
+        public void Commit(){
+            transaction?.Commit();
+            transaction = null;
+            Disconect();
+        }
+
+        public void ExecuteQueryTransaction(string sql, Dictionary<string, object> parameters)
+        {
+            try{
+                if (cn == null || cn.State != ConnectionState.Open)
+                    throw new Exception("No existe una conexión activa.");
+
+                if (transaction == null)
+                    throw new Exception("No existe una transacción activa.");
+
+                using (var cm = new HanaCommand(sql, this.cn))
+                {
+                    if (transaction != null)
+                        cm.Transaction = transaction;
+
+                    if (parameters != null)
+                    {
+                        foreach (var p in parameters)
+                        {
+                            cm.Parameters.AddWithValue(p.Key, p.Value);
+                        }
+                    }
+
+                    cm.ExecuteNonQuery();
+                }
             }
-            catch (Exception ex)
-            {
-                Disconect();
-                throw;
+            catch (Exception e){
+                throw new Exception($"Error ejecutando query:\r\n{sql}\r\n{e.Message}", e);
             }
         }
+
+        public DataTable GetDataTableTransaction(string sql, Dictionary<string, object> parameters)
+        {
+            try{
+                if (cn == null || cn.State != ConnectionState.Open)
+                    throw new Exception("No existe una conexión activa.");
+
+                using (var cmd = new HanaCommand(sql, this.cn)){
+                    if (transaction != null)
+                        cmd.Transaction = transaction;
+
+                    if (parameters != null)
+                    {
+                        foreach (var p in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(p.Key, p.Value);
+                        }
+                    }
+
+                    using (var da = new HanaDataAdapter(cmd)){
+                        var dt = new DataTable();
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+            catch (Exception e){
+                throw new Exception(
+                    $"Error ejecutando query:\r\n{sql}\r\n{e.Message}",
+                    e);
+            }
+        }
+
+        public string GetScalarTransaction(string sql, Dictionary<string, object> parametros){
+            var dt = GetDataTableTransaction(sql, parametros);
+
+            if (dt == null || dt.Rows.Count == 0)
+                return null;
+
+            return dt.Rows[0][0]?.ToString();
+        }
+        public int GetIntScalarTransaction(string sql, Dictionary<string, object> parametros){
+            return GetInt(GetScalarTransaction(sql, parametros));
+        }
+
+        public void Rollback(){
+            transaction?.Rollback();
+            transaction = null;
+            Disconect();
+        }
+
+        /*****          FIN TRANSACCIONES          *****/
     }
-}
+    }
