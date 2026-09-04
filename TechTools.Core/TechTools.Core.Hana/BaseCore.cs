@@ -133,7 +133,10 @@ namespace TechTools.Core.Hana
         {
             try
             {
-                return this.GetInt(this.GetScalarByQuery(sql,parametros));
+                var dt = this.GetDataTableByQuery(sql, parametros);
+                if (dt == null || dt.Rows.Count == 0)
+                    return 0;
+                return this.GetInt(dt.Rows[0][0]);
             }
             catch (Exception e)
             {
@@ -144,7 +147,10 @@ namespace TechTools.Core.Hana
         {
             try
             {
-                return this.GetDecimal(this.GetScalarByQuery(sql, parametros));
+                var dt = this.GetDataTableByQuery(sql, parametros);
+                if (dt == null || dt.Rows.Count == 0)
+                    return 0m;
+                return this.GetDecimal(dt.Rows[0][0]);
             }
             catch (Exception e)
             {
@@ -156,7 +162,10 @@ namespace TechTools.Core.Hana
         {
             try
             {
-                return this.GetDouble(this.GetScalarByQuery(sql, parametros));
+                var dt = this.GetDataTableByQuery(sql, parametros);
+                if (dt == null || dt.Rows.Count == 0)
+                    return 0d;
+                return this.GetDouble(dt.Rows[0][0]);
             }
             catch (Exception e)
             {
@@ -268,7 +277,10 @@ namespace TechTools.Core.Hana
             return dt.Rows[0][0]?.ToString();
         }
         public int GetIntScalarTransaction(string sql, Dictionary<string, object> parametros){
-            return GetInt(GetScalarTransaction(sql, parametros));
+            var dt = GetDataTableTransaction(sql, parametros);
+            if (dt == null || dt.Rows.Count == 0)
+                return 0;
+            return GetInt(dt.Rows[0][0]);
         }
 
         public void Rollback(){

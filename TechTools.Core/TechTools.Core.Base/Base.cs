@@ -32,11 +32,26 @@ namespace TechTools.Core.Base
             }
             return Convert.ToBoolean(me);
         }
+
+        //public int GetInt(object me)
+        //{
+        //    if (DBNull.Value.Equals(me))
+        //    {
+        //        return 0;
+        //    }
+        //    return Convert.ToInt32(me);
+        //}
+
         public int GetInt(object me)
         {
-            if (DBNull.Value.Equals(me))
-            {
+            if (me == null || DBNull.Value.Equals(me))
                 return 0;
+            // Si es un string, manejamos el caso de que venga con decimales (ej. "300.00")
+            if (me is string s){
+                if (string.IsNullOrWhiteSpace(s))
+                    return 0;
+                if (decimal.TryParse(s, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal result))
+                    return (int)Math.Round(result);
             }
             return Convert.ToInt32(me);
         }
