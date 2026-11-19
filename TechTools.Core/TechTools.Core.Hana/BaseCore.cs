@@ -237,6 +237,35 @@ namespace TechTools.Core.Hana
             }
         }
 
+        // esto solo devuelve los row affected
+        // util para update, delete, insert y saber cuantos rows se afectaron
+        public int ExecuteNonQueryTransaction(string sql, Dictionary<string, object> parameters)
+        {
+            try
+            {
+                if (cn == null || cn.State != ConnectionState.Open)
+                    throw new Exception("No existe una conexión activa.");
+
+                if (transaction == null)
+                    throw new Exception("No existe una transacción activa.");
+
+                using (var cm = new HanaCommand(sql, this.cn))
+                {
+                    cm.Transaction = transaction;
+
+                    if (parameters != null)
+                        foreach (var p in parameters)
+                        {
+                            cm.Parameters.AddWithValue(p.Key, p.Value);
+                        }
+                    return cm.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error ejecutando query:\r\n{sql}\r\n{e.Message}", e);
+            }
+        }
         public DataTable GetDataTableTransaction(string sql, Dictionary<string, object> parameters)
         {
             try{
