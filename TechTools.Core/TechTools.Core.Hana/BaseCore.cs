@@ -122,7 +122,8 @@ namespace TechTools.Core.Hana
             }
             catch (Exception e)
             {
-                throw new Exception($"Error ejecutando query: {sql}\n{e.Message+e.StackTrace}");
+                var inner = e.InnerException != null ? $"\nDetalle Interno: {e.InnerException.Message}" : "";
+                throw new Exception($"Error ejecutando query: {sql}\n{e.Message}{inner}\n{e.StackTrace}");
             }
             finally
             {
